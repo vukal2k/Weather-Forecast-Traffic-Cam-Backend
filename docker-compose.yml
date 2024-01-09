@@ -1,0 +1,37 @@
+version: '1'
+
+services:
+  database:
+    image: postgres:latest
+    restart: on-failure
+    container_name: postgres
+    hostname: database
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_DB=weaforetracam
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=weaforetracampass
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    networks:
+      - backend
+  cache:
+    hostname: redis
+    image: redis:latest
+    restart: on-failure
+    container_name: redis
+    ports:
+      - '6379:6379'
+    networks:
+      - backend
+networks:
+  backend:
+    driver: bridge
+volumes:
+  pg_data:
+    driver: local
+  rabbit_data:
+    driver: local
+  mongo_data:
+    driver: local
