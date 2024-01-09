@@ -1,0 +1,55 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Jest Debug e2e tests watch mode",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceRoot}/node_modules/jest/bin/jest.js",
+      "args": [
+        "test",
+        "--runInBand",
+        "--no-cache",
+        "--watchAll"
+      ],
+      "cwd": "${workspaceRoot}",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen"
+    },
+    {
+      "name": "Debug User",
+      "request": "attach",
+      "type": "node",
+      "restart": true,
+      "port": 9229
+    },
+    {
+      "name": "Debug Post",
+      "request": "attach",
+      "type": "node",
+      "restart": true,
+      "port": 9228
+    },
+    {
+      "name": "Debug Token",
+      "request": "attach",
+      "type": "node",
+      "restart": true,
+      "port": 9227
+    },
+    {
+      "name": "Debug Vaccination",
+      "request": "attach",
+      "type": "node",
+      "restart": true,
+      "port": 9999
+    },
+    {
+      "name": "Debug Safehome",
+      "request": "attach",
+      "type": "node",
+      "restart": true,
+      "port": 9876
+    }
+  ]
+}
