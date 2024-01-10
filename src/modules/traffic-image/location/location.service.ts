@@ -1,6 +1,7 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { firstValueFrom } from 'rxjs';
+import { LocationDto } from '../../../dto/traffic-image/location.dto';
 import { GoogleGeocoderService } from '../../../utils/modules/google-geocoder/google-geocoder.service';
 
 @Injectable()
@@ -13,7 +14,7 @@ export class LocationService {
     private googleGeocorderService: GoogleGeocoderService,
   ) {}
 
-  public async getLocations(dateTime: Date) {
+  public async getLocations(dateTime: Date): Promise<LocationDto[]> {
     const result = await firstValueFrom(
       this.httpService.get(process.env.TRAFFIC_IMAGES_URL, {
         params: {
@@ -22,7 +23,7 @@ export class LocationService {
       }),
     );
 
-    const locations = [];
+    const locations: LocationDto[] = [];
 
     for await (const camera of result.data.items[0]?.cameras ?? []) {
       // const lat = camera.location.latitude;

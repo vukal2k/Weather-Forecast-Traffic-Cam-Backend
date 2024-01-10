@@ -1,6 +1,9 @@
 import { Controller, Get, Query } from '@nestjs/common';
+import { ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { LocationDto } from '../../../dto/traffic-image/location.dto';
 import { LocationService } from './location.service';
 
+@ApiTags('Traffic Images')
 @Controller('locations')
 export class LocationController {
   /**
@@ -8,7 +11,13 @@ export class LocationController {
    */
   constructor(private locationSv: LocationService) {}
   @Get()
-  getLocations(@Query('dateTime') dateTime: Date) {
+  @ApiResponse({ type: LocationDto, isArray: true })
+  @ApiQuery({
+    type: Date,
+    name: 'dateTime',
+    description: 'YYYY-MM-DD[T]HH:mm:ss (SGT)',
+  })
+  getLocations(@Query('dateTime') dateTime: Date): Promise<LocationDto[]> {
     return this.locationSv.getLocations(dateTime);
   }
 }
