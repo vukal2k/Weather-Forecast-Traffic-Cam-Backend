@@ -19,7 +19,6 @@ const statusMessages = {
 
 @Injectable()
 export class ResponseInterceptor implements NestInterceptor {
-  // Path to include for Payload Encryption
   public constructor(private readonly reflector: Reflector) {}
 
   public async intercept(
@@ -27,13 +26,11 @@ export class ResponseInterceptor implements NestInterceptor {
     next: CallHandler,
   ): Promise<any> {
     const body = await firstValueFrom(next.handle());
-    const status = this.reflector.get<number>(
-      '__httpCode__',
-      context.getHandler(),
-    );
+    const response = context.switchToHttp().getResponse();
+
     return of({
-      statusCode: status,
-      message: statusMessages[status],
+      statusCode: response.statusCode,
+      message: statusMessages[response.statusCode],
       data: body,
     });
   }

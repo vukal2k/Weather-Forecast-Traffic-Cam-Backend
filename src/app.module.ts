@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { config } from '../typeorm-config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { TrafficImageModule } from './modules/traffic-image/traffic-image.module';
 import { AllExceptionsFilter } from './utils/filters/exception.filter';
 
 @Module({
@@ -15,6 +16,7 @@ import { AllExceptionsFilter } from './utils/filters/exception.filter';
     TypeOrmModule.forRoot({
       ...config,
     }),
+    TrafficImageModule,
   ],
   controllers: [AppController],
   providers: [
