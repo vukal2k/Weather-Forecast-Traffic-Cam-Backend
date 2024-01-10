@@ -19,6 +19,7 @@ export class LocationController {
     required: false,
   })
   getLocations(@Query('dateTime') dateTime?: Date): Promise<LocationDto[]> {
+    console.log(dateTime);
     return this.locationSv.getLocations(dateTime);
   }
 }

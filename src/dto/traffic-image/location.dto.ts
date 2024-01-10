@@ -1,5 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
 
+class LongLatDto {
+  latitude: number;
+  longitude: number;
+}
 export class LocationDto {
   @ApiProperty({
     example: '20 st Newyork US',
@@ -12,4 +16,6 @@ export class LocationDto {
     description: 'Camera image url',
   })
   image: string;
+
+  locationLongLat: LongLatDto;
 }

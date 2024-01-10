@@ -16,9 +16,9 @@ export class LocationService {
     private cacheService: CacheService,
   ) {}
 
-  public async getLocations(dateTime: Date): Promise<LocationDto[]> {
+  public async getLocations(dateTime?: Date | string): Promise<LocationDto[]> {
     const cachedData: LocationDto[] = await this.cacheService.get(
-      dateTime?.toISOString() ?? 'all',
+      dateTime?.toString() ?? 'all',
     );
     if (cachedData) {
       return cachedData;
@@ -42,10 +42,11 @@ export class LocationService {
       locations.push({
         location: geo[0]?.formatted_address ?? '',
         image: camera.image,
+        locationLongLat: camera.location,
       });
     }
 
-    await this.cacheService.set(dateTime?.toDateString() ?? 'all', locations);
+    await this.cacheService.set(dateTime?.toString() ?? 'all', locations);
 
     return locations;
   }
