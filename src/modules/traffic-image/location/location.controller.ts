@@ -16,8 +16,9 @@ export class LocationController {
     type: Date,
     name: 'dateTime',
     description: 'YYYY-MM-DD[T]HH:mm:ss (SGT)',
+    required: false,
   })
-  getLocations(@Query('dateTime') dateTime: Date): Promise<LocationDto[]> {
+  getLocations(@Query('dateTime') dateTime?: Date): Promise<LocationDto[]> {
     return this.locationSv.getLocations(dateTime);
   }
 }
