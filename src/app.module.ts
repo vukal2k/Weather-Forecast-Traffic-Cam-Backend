@@ -1,3 +1,4 @@
+import { HttpModule } from '@nestjs/axios';
 import { Module, ValidationPipe } from '@nestjs/common';
 import { APP_FILTER, APP_PIPE } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -8,6 +9,9 @@ import { AllExceptionsFilter } from './utils/filters/exception.filter';
 
 @Module({
   imports: [
+    HttpModule.register({
+      timeout: 60000,
+    }),
     TypeOrmModule.forRoot({
       ...config,
     }),
