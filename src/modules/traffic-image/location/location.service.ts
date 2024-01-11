@@ -1,5 +1,6 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
+import * as moment from 'moment';
 import { firstValueFrom } from 'rxjs';
 import { LocationDto } from '../../../dto/traffic-image/location.dto';
 import { CacheService } from '../../../utils/modules/cache/cache.service';
@@ -18,7 +19,7 @@ export class LocationService {
 
   public async getLocations(dateTime?: Date | string): Promise<LocationDto[]> {
     const cachedData: LocationDto[] = await this.cacheService.get(
-      dateTime?.toString() ?? 'all',
+      dateTime ? moment(dateTime).format('YYYYMMDDHHmmss') : 'all',
     );
     if (cachedData) {
       return cachedData;
@@ -46,7 +47,10 @@ export class LocationService {
       });
     }
 
-    await this.cacheService.set(dateTime?.toString() ?? 'all', locations);
+    await this.cacheService.set(
+      dateTime ? moment(dateTime).format('YYYYMMDDHHmmss') : 'all',
+      locations,
+    );
 
     return locations;
   }

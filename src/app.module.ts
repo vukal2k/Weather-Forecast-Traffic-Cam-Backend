@@ -6,6 +6,7 @@ import { config } from '../typeorm-config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TrafficImageModule } from './modules/traffic-image/traffic-image.module';
+import { WeatherForecastModule } from './modules/weather-forecast/weather-forcast.module';
 import { AllExceptionsFilter } from './utils/filters/exception.filter';
 
 @Module({
@@ -17,6 +18,7 @@ import { AllExceptionsFilter } from './utils/filters/exception.filter';
       ...config,
     }),
     TrafficImageModule,
+    WeatherForecastModule,
   ],
   controllers: [AppController],
   providers: [
