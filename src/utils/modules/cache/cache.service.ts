@@ -37,4 +37,12 @@ export class CacheService {
     const newData: T[] = data.map((d: string) => JSON.parse(d));
     return newData;
   }
+
+  async zRemrangeByScore(
+    key: string,
+    start: number | string,
+    stop: number | string,
+  ): Promise<number> {
+    return await this.redis.zremrangebyscore(key, start, stop);
+  }
 }

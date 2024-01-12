@@ -13,12 +13,12 @@ export class ClientAuthGuard implements CanActivate {
     try {
       const request = context.getArgByIndex(0);
 
-      const requiredRoles = this.reflector.get<string[]>(
+      const allowUnauthorize = this.reflector.get<string[]>(
         'allowUnauthorizedRequest',
         context.getHandler(),
       );
-      if (!requiredRoles) {
-        return true; // if no roles are required, allow access
+      if (!!allowUnauthorize) {
+        return true;
       }
 
       const apiKey = request.headers['api-key'];

@@ -20,7 +20,7 @@ export class QueryReportController extends BaseController {
   }
 
   @Get('/all-recently')
-  public async getAllRecently() {
-    return this.queryReportSv.getAllRecentlyQuery();
+  public async getAllRecently(@CurrentUser() userId) {
+    return this.queryReportSv.getAllRecentlyQuery(userId);
   }
 }

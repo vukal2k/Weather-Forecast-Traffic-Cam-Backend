@@ -22,14 +22,18 @@ export class Forecast24HoursService {
     private configService: ConfigService,
   ) {}
 
+  private async cacheUserQuery(dateTime: Date|string, currentUserId: string){
+    this.cacheService.zCounter(CACHE_KEYS.TOP_SEARCH, moment(dateTime).format('DD-MMM-YYYY HH:mm:ss'));
+    this.cacheService.zCounter(currentUserId, moment(dateTime).format('DD-MMM-YYYY HH:mm:ss'));
+  }
+
   public async get24ForeCast(
     currentUserId: string,
     dateTime?: Date | string,
     date?: Date | string,
   ): Promise<Weather24Forecast> {
     if(dateTime){
-      this.cacheService.zCounter(CACHE_KEYS.TOP_SEARCH, moment(dateTime).format('YYYYMMDDHHmmss'));
-      this.cacheService.zCounter(currentUserId, moment(dateTime).format('YYYYMMDDHHmmss'));
+      this.cacheUserQuery(dateTime, currentUserId);
     }
 
     const rawData = await firstValueFrom(
@@ -60,6 +64,7 @@ export class Forecast24HoursService {
             eastForecast: period.regions.east,
             centraForecast: period.regions.central,
             northForecast: period.regions.north,
+            southForecast: period.regions.south,
           }) as Weather24ForecastPeriodItem,
       );
 
