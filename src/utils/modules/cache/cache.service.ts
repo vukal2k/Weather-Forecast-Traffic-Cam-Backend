@@ -22,4 +22,19 @@ export class CacheService {
     }
     return await this.redis.set(key, str);
   }
+
+  async zCounter<T>(key: string, data: T): Promise<number> {
+    const str = JSON.stringify(data);
+    return await this.redis.zadd(key, 'INCR', 1, str);
+  }
+
+  async zReverangeByScore<T>(
+    key: string,
+    start: number,
+    stop: number,
+  ): Promise<T[]> {
+    const data = await this.redis.zrevrange(key, start, stop, 'WITHSCORES');
+    const newData: T[] = data.map((d: string) => JSON.parse(d));
+    return newData;
+  }
 }

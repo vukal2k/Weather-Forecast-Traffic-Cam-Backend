@@ -9,6 +9,7 @@ import {
   Weather24ForecastPeriodItem,
 } from '../../../dto/weather-forecast/forecast-240hour.dto';
 import { CacheService } from '../../../utils/modules/cache/cache.service';
+import { CACHE_KEYS } from '@/constants/caches';
 
 @Injectable()
 export class Forecast24HoursService {
@@ -22,9 +23,15 @@ export class Forecast24HoursService {
   ) {}
 
   public async get24ForeCast(
+    currentUserId: string,
     dateTime?: Date | string,
     date?: Date | string,
   ): Promise<Weather24Forecast> {
+    if(dateTime){
+      this.cacheService.zCounter(CACHE_KEYS.TOP_SEARCH, moment(dateTime).format('YYYYMMDDHHmmss'));
+      this.cacheService.zCounter(currentUserId, moment(dateTime).format('YYYYMMDDHHmmss'));
+    }
+
     const rawData = await firstValueFrom(
       this.httpService.get(this.configService.get('FORECAST_24_HOUR_URL'), {
         params: {
