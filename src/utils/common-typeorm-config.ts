@@ -37,13 +37,3 @@ export const db_config: TypeOrmModuleOptions & PostgresConnectionOptions = {
 
 // console.log(db_config);
 export const connectionSource = new DataSource(db_config);
-
-export default async function insertDataWithPrimaryKeyId(
-  datas: any[],
-  dataSource: DataSource,
-  entity: any,
-) {
-  const repo = await dataSource.getRepository(entity);
-  await repo.save(datas);
-  console.log('   Inserted ' + datas?.length + ' seed data to table ' + entity);
-}

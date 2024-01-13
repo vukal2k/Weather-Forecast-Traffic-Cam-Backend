@@ -2,6 +2,10 @@ import { BaseController } from '@/utils/base.controller';
 import { CurrentUser } from '@/utils/decorators/user.decorator';
 import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  PeriodType,
+  TopMostPeriodResponseItem,
+} from '../../../dto/query-report/top-most-period.dto';
 import { TopMostQueriesResponseItem } from '../../../dto/query-report/top-most-queries.dto';
 import {
   LogLocationSearchDto,
@@ -59,5 +63,17 @@ export class QueryReportController extends BaseController {
     @Query('to') to: Date,
   ): Promise<TopMostQueriesResponseItem[]> {
     return this.queryReportSv.getTop10MostQueriesWithPeriod(from, to);
+  }
+
+  @AllowUnauthorizedRequest()
+  @Get('most-period-queries')
+  @ApiResponse({
+    type: TopMostPeriodResponseItem,
+  })
+  getMostSearchPeriod(
+    @Query('periodAmount') periodAmount: number,
+    @Query('period') period: PeriodType,
+  ): Promise<TopMostPeriodResponseItem> {
+    return this.queryReportSv.getMostSearchPeriod(periodAmount, period);
   }
 }

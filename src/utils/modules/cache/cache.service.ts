@@ -45,4 +45,8 @@ export class CacheService {
   ): Promise<number> {
     return await this.redis.zremrangebyscore(key, start, stop);
   }
+
+  async zScore(key: string, value: string): Promise<string> {
+    return await this.redis.zscore(key, value);
+  }
 }

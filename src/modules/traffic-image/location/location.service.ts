@@ -30,8 +30,6 @@ export class LocationService {
       .tz('Asia/Singapore')
       .format('YYYY-MM-DDTHH:mm:ss+08:00');
 
-    console.log('dateTimeSg: ', dateTimeSg);
-
     const result = await firstValueFrom(
       this.httpService.get(process.env.TRAFFIC_IMAGES_URL, {
         params: {

@@ -39,11 +39,6 @@ export class Forecast24HoursService {
 
     const dateTimeSg = moment(dateTime).tz('Asia/Singapore');
 
-    console.log('parmas: ', {
-      date_time: dateTime ? dateTimeSg.format('YYYY-MM-DDTHH:mm:ss+08:00') : undefined,
-      date: date ? (!dateTime ? date : dateTimeSg.format('YYYY-MM-DD')) : undefined,
-    })
-
     const rawData = await firstValueFrom(
       this.httpService.get(this.configService.get('FORECAST_24_HOUR_URL'), {
         params: {
