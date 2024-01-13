@@ -19,3 +19,15 @@ export class LocationDto {
 
   locationLongLat: LongLatDto;
 }
+
+export class LogLocationSearchDto {
+  @ApiProperty({
+    required: true,
+  })
+  dateTime: Date;
+
+  @ApiProperty({
+    required: true,
+  })
+  location: string;
+}

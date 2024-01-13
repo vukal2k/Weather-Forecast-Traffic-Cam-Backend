@@ -40,5 +40,10 @@
   "hediet.vscode-drawio.theme": "atlas",
   "rest-client.previewColumn": "current",
   "rest-client.requestNameAsResponseTabTitle": true,
-  "rest-client.showResponseInDifferentTab": false
+  "rest-client.showResponseInDifferentTab": false,
+  "[javascript][typescript]": {
+    "editor.codeActionsOnSave": {
+      "source.fixAll": "explicit"
+    }
+  }
 }

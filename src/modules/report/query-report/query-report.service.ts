@@ -1,10 +1,15 @@
 import { CACHE_KEYS } from '@/constants/caches';
 import { CacheService } from '@/utils/modules/cache/cache.service';
 import { Injectable } from '@nestjs/common';
+import { LocationSearchHistoryRepository } from '../../../databases/repositories/LocationSearchHistory.repository';
+import { LogLocationSearchDto } from '../../../dto/traffic-image/location.dto';
 
 @Injectable()
 export class QueryReportService {
-  constructor(private cacheService: CacheService) {}
+  constructor(
+    private cacheService: CacheService,
+    private locationSearchHistoryRepository: LocationSearchHistoryRepository,
+  ) {}
 
   public async getMyRecentlyQuery(userId: string) {
     const result = await this.cacheService.zReverangeByScore(userId, 0, 2);
@@ -32,5 +37,15 @@ export class QueryReportService {
     }
 
     return result;
+  }
+
+  public async logLocationSearch(
+    logLocationSearch: LogLocationSearchDto,
+    userId: string,
+  ) {
+    await this.locationSearchHistoryRepository.insert({
+      createdBy: userId,
+      ...logLocationSearch,
+    });
   }
 }

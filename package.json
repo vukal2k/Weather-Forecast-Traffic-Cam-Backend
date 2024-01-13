@@ -8,6 +8,9 @@
   "scripts": {
     "docker-start": "docker compose up",
     "docker-stop": "docker compose down",
+    "typeorm-migration": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
+    "db-migration-gen": "npm run typeorm-migration -- -d typeorm-config.ts migration:generate src/databases/entities/migrations/migrations",
+    "db-migration-run": "npm run typeorm-migration -- -d typeorm-config.ts migration:run",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
