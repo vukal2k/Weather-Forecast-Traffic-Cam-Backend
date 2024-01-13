@@ -2,7 +2,10 @@ import { CACHE_KEYS } from '@/constants/caches';
 import { CacheService } from '@/utils/modules/cache/cache.service';
 import { Injectable } from '@nestjs/common';
 import { LocationSearchHistoryRepository } from '../../../databases/repositories/LocationSearchHistory.repository';
-import { LogLocationSearchDto } from '../../../dto/traffic-image/location.dto';
+import {
+  LogLocationSearchDto,
+  Top10RecentlyQueriesResponseItem,
+} from '../../../dto/query-report/top-10-recently-queries.dto';
 
 @Injectable()
 export class QueryReportService {
@@ -47,5 +50,24 @@ export class QueryReportService {
       createdBy: userId,
       ...logLocationSearch,
     });
+  }
+
+  public async getTop10RecentlyQueries() {
+    const resultData = await this.locationSearchHistoryRepository.find({
+      order: {
+        created: 'DESC',
+      },
+      take: 10,
+    });
+
+    return resultData.map(
+      (rDt) =>
+        ({
+          created: rDt.created,
+          createdBy: rDt.createdBy,
+          location: rDt.location,
+          dateTime: rDt.dateTime,
+        }) as Top10RecentlyQueriesResponseItem,
+    );
   }
 }
