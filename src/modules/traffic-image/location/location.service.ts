@@ -20,16 +20,22 @@ export class LocationService {
 
   public async getLocations(dateTime?: Date | string): Promise<LocationDto[]> {
     const cachedData: LocationDto[] = await this.cacheService.get(
-      dateTime ? moment(dateTime).format('YYYYMMDDHHmmss') : 'all',
+      dateTime ? moment(dateTime).toISOString() : 'all',
     );
     if (cachedData) {
       return cachedData;
     }
 
+    const dateTimeSg = moment(dateTime)
+      .tz('Asia/Singapore')
+      .format('YYYY-MM-DDTHH:mm:ss+08:00');
+
+    console.log('dateTimeSg: ', dateTimeSg);
+
     const result = await firstValueFrom(
       this.httpService.get(process.env.TRAFFIC_IMAGES_URL, {
         params: {
-          date_time: dateTime,
+          date_time: dateTimeSg,
         },
       }),
     );
@@ -40,16 +46,23 @@ export class LocationService {
       const lat = camera.location.latitude;
       const long = camera.location.longitude;
 
-      const geo = await this.googleGeocorderService.reverseFind(lat, long);
+      const geo = await this.googleGeocorderService
+        .reverseFind(lat, long)
+        .catch((err) => {
+          console.error(err);
+        });
       locations.push({
-        location: geo[0]?.formatted_address ?? '',
+        location:
+          geo && !!geo[0]?.formatted_address
+            ? geo[0]?.formatted_address
+            : camera.location.latitude + '-' + camera.location.longitude,
         image: camera.image,
         locationLongLat: camera.location,
       });
     }
 
     await this.cacheService.set(
-      dateTime ? moment(dateTime).format('YYYYMMDDHHmmss') : 'all',
+      dateTime ? moment(dateTime).toISOString() : 'all',
       locations,
     );
 

@@ -1,15 +1,16 @@
 /* eslint-disable prettier/prettier */
+import { CACHE_KEYS } from '@/constants/caches';
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import * as moment from 'moment';
+import * as moment from "moment-timezone";
 import { firstValueFrom } from 'rxjs';
 import {
   Weather24Forecast,
   Weather24ForecastPeriodItem,
 } from '../../../dto/weather-forecast/forecast-240hour.dto';
 import { CacheService } from '../../../utils/modules/cache/cache.service';
-import { CACHE_KEYS } from '@/constants/caches';
+
 
 @Injectable()
 export class Forecast24HoursService {
@@ -22,9 +23,9 @@ export class Forecast24HoursService {
     private configService: ConfigService,
   ) {}
 
-  private async cacheUserQuery(dateTime: Date|string, currentUserId: string){
-    this.cacheService.zCounter(CACHE_KEYS.TOP_SEARCH, moment(dateTime).format('DD-MMM-YYYY HH:mm:ss'));
-    this.cacheService.zCounter(currentUserId, moment(dateTime).format('DD-MMM-YYYY HH:mm:ss'));
+  private async cacheUserQuery(dateTime: Date | string, currentUserId: string) {
+    this.cacheService.zCounter(CACHE_KEYS.TOP_SEARCH, moment(dateTime).toISOString());
+    this.cacheService.zCounter(currentUserId, moment(dateTime).toISOString());
   }
 
   public async get24ForeCast(
@@ -32,15 +33,22 @@ export class Forecast24HoursService {
     dateTime?: Date | string,
     date?: Date | string,
   ): Promise<Weather24Forecast> {
-    if(dateTime){
+    if (dateTime) {
       this.cacheUserQuery(dateTime, currentUserId);
     }
+
+    const dateTimeSg = moment(dateTime).tz('Asia/Singapore');
+
+    console.log('parmas: ', {
+      date_time: dateTime ? dateTimeSg.format('YYYY-MM-DDTHH:mm:ss+08:00') : undefined,
+      date: date ? (!dateTime ? date : dateTimeSg.format('YYYY-MM-DD')) : undefined,
+    })
 
     const rawData = await firstValueFrom(
       this.httpService.get(this.configService.get('FORECAST_24_HOUR_URL'), {
         params: {
-          date_time: dateTime ?? undefined,
-          date: date ? moment(date).format('YYYY-MM-DD') : undefined,
+          date_time: dateTime ? dateTimeSg.format('YYYY-MM-DDTHH:mm:ss+08:00') : undefined,
+          date: date ? (!dateTime ? date : dateTimeSg.format('YYYY-MM-DD')) : undefined,
         },
       }),
     );

@@ -29,7 +29,7 @@ export class QueryReportService {
         index,
       );
 
-      if (!myRecentlyQuery.includes(cachedData[0])) {
+      if (cachedData[0] && !myRecentlyQuery.includes(cachedData[0])) {
         result.push(cachedData[0]);
       }
 
