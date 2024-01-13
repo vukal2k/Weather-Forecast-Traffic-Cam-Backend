@@ -1,11 +1,12 @@
 import { BaseController } from '@/utils/base.controller';
 import { CurrentUser } from '@/utils/decorators/user.decorator';
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { TopMostQueriesResponseItem } from '../../../dto/query-report/top-most-queries.dto';
 import {
   LogLocationSearchDto,
-  Top10RecentlyQueriesResponseItem,
-} from '../../../dto/query-report/top-10-recently-queries.dto';
+  TopRecentlyQueriesResponseItem,
+} from '../../../dto/query-report/top-recently-queries.dto';
 import { AllowUnauthorizedRequest } from '../../../utils/decorators/allow.unauthorized.decorator';
 import { QueryReportService } from './query-report.service';
 
@@ -40,10 +41,23 @@ export class QueryReportController extends BaseController {
   @AllowUnauthorizedRequest()
   @Get('top-10-recently-queries')
   @ApiResponse({
-    type: Top10RecentlyQueriesResponseItem,
+    type: TopRecentlyQueriesResponseItem,
     isArray: true,
   })
-  getTop10RecentlyQueries(): Promise<Top10RecentlyQueriesResponseItem[]> {
+  getTop10RecentlyQueries(): Promise<TopRecentlyQueriesResponseItem[]> {
     return this.queryReportSv.getTop10RecentlyQueries();
+  }
+
+  @AllowUnauthorizedRequest()
+  @Get('top-10-most-queries/period')
+  @ApiResponse({
+    type: TopMostQueriesResponseItem,
+    isArray: true,
+  })
+  getTop10MostQueriesWithPeriod(
+    @Query('from') from: Date,
+    @Query('to') to: Date,
+  ): Promise<TopMostQueriesResponseItem[]> {
+    return this.queryReportSv.getTop10MostQueriesWithPeriod(from, to);
   }
 }

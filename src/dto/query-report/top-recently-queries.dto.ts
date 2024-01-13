@@ -12,7 +12,7 @@ export class LogLocationSearchDto {
   location: string;
 }
 
-export class Top10RecentlyQueriesResponseItem extends LogLocationSearchDto {
+export class TopRecentlyQueriesResponseItem extends LogLocationSearchDto {
   created: Date | string;
   createdBy: string;
 }

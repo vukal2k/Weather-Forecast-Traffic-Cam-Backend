@@ -2,10 +2,11 @@ import { CACHE_KEYS } from '@/constants/caches';
 import { CacheService } from '@/utils/modules/cache/cache.service';
 import { Injectable } from '@nestjs/common';
 import { LocationSearchHistoryRepository } from '../../../databases/repositories/LocationSearchHistory.repository';
+import { TopMostQueriesResponseItem } from '../../../dto/query-report/top-most-queries.dto';
 import {
   LogLocationSearchDto,
-  Top10RecentlyQueriesResponseItem,
-} from '../../../dto/query-report/top-10-recently-queries.dto';
+  TopRecentlyQueriesResponseItem,
+} from '../../../dto/query-report/top-recently-queries.dto';
 
 @Injectable()
 export class QueryReportService {
@@ -67,7 +68,36 @@ export class QueryReportService {
           createdBy: rDt.createdBy,
           location: rDt.location,
           dateTime: rDt.dateTime,
-        }) as Top10RecentlyQueriesResponseItem,
+        }) as TopRecentlyQueriesResponseItem,
+    );
+  }
+
+  public async getTop10MostQueriesWithPeriod(
+    from: Date | string,
+    to: Date | string,
+  ) {
+    const resultData = await this.locationSearchHistoryRepository
+      .createQueryBuilder('search_query')
+      .select('search_query.date_time', 'dateTime')
+      .addSelect('search_query.location', 'location')
+      .addSelect('COUNT(id)', 'count')
+      .where('search_query.created BETWEEN :startDate AND :endDate', {
+        startDate: new Date(from).toISOString(),
+        endDate: new Date(to).toISOString(),
+      })
+      .groupBy('search_query.date_time')
+      .addGroupBy('search_query.location')
+      .orderBy('count', 'DESC')
+      .limit(10)
+      .getRawMany();
+
+    return resultData.map(
+      (rDt) =>
+        ({
+          location: rDt.location,
+          dateTime: rDt.dateTime,
+          count: rDt.count,
+        }) as TopMostQueriesResponseItem,
     );
   }
 }
