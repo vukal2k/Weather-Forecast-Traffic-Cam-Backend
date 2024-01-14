@@ -42,7 +42,7 @@ npm install
 
 ## Environment Setup
 
-To run this project, you will need to set up the following environment variables. You can do this by creating a `.env` file in the root directory of the project and adding the following key-value pairs:
+To run this project, you will need to set up the following environment variables. You can do this by creating a `.env` (local) or `.docker.env` (Docker) file in the root directory of the project and adding the following key-value pairs:
 ```plaintext
 # PostgreSQL
 DB_TYPE=postgres
@@ -115,7 +115,10 @@ npm run test:e2e
 ```
 
 ## API Documentation
+### Local:
 http://localhost:3000/swagger#/
+### Docker:
+http://localhost:3001/swagger#/
 
 # Note
 Sometime ~~google-geocoder~~ geoplugin.net API will be exceed so the result for location will have format "lat-long". Please check logs in file "logs/error.log" to see the error.

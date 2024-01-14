@@ -6,7 +6,7 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "docker-start": "docker compose up",
+    "docker-start": "docker compose up --build",
     "docker-stop": "docker compose down",
     "typeorm-migration": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
     "db-migration-gen": "npm run typeorm-migration -- -d typeorm-config.ts migration:generate src/databases/entities/migrations/migrations",

@@ -25,6 +25,19 @@ services:
       - '6379:6379'
     networks:
       - backend
+
+  nestjs-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3000"
+    env_file: .docker.env
+    depends_on:
+      - database
+      - cache
+    networks:
+      - backend
 networks:
   backend:
     driver: bridge
