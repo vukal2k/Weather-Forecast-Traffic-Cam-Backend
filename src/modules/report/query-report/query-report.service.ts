@@ -111,6 +111,9 @@ export class QueryReportService {
   }
 
   public async getMostSearchPeriod(periodAmount: number, period: PeriodType) {
+    if (isNaN(Number(periodAmount))) {
+      throw new BadRequestException('periodAmount must be a number');
+    }
     if (!Object.values(PeriodType).includes(period as PeriodType)) {
       throw new BadRequestException(
         `period is not valid. Valid period: ${Object.values(PeriodType).join(
