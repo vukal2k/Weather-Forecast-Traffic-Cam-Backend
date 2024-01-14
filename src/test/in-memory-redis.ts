@@ -1,11 +1,11 @@
+import { ConfigService } from '@nestjs/config';
 import * as killPortProcess from 'kill-port-process';
 import * as pidFromPort from 'pid-from-port';
 import RedisMemoryServer from 'redis-memory-server';
 import { CacheService } from '../utils/modules/cache/cache.service';
-import { redis_url } from './setup-e2e';
 
 export const mockRedisFactory = async () => {
-  const cacheService = new CacheService(redis_url);
+  const cacheService = new CacheService(new ConfigService());
   return cacheService;
 };
 
@@ -23,6 +23,8 @@ export const createInMemRedisApp = async (port) => {
     },
     autoStart: true,
   });
+
+  process.env.REDIS_URL = 'redis://localhost:' + port;
 
   const host = await redisServer.getHost();
   const url = `redis://${host}:${port}`;

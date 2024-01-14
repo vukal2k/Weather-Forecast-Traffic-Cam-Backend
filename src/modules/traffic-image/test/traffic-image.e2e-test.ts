@@ -1,4 +1,5 @@
 import * as request from 'supertest';
+import { mockRedisFactory } from '../../../test/in-memory-redis';
 import { testingApp } from '../../../test/setup-e2e';
 
 describe.only('E2E testing traffic-image', () => {
@@ -7,5 +8,10 @@ describe.only('E2E testing traffic-image', () => {
       .get('/locations')
       .set('Api-Key', 'test')
       .expect(200);
+
+    const redisService = await mockRedisFactory();
+    const cachedData = await redisService.get('all');
+
+    expect(cachedData).not.toBeNull();
   });
 });
