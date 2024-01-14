@@ -15,7 +15,7 @@ export class LoggerService implements ILoggerService {
   constructor() {
     Error.stackTraceLimit = 10;
     const dir = './logs';
-    !fs.existsSync(dir) && fs.mkdirSync(dir);
+    !fs.existsSync(dir) && fs.mkdirSync(dir, { recursive: true });
     this.pinoLogger = pino(
       {
         timestamp: () => `,"timestamp":"${new Date().toISOString()}"`,
@@ -23,11 +23,26 @@ export class LoggerService implements ILoggerService {
       },
       multistream([
         { stream: process.stdout },
-        { stream: pino.destination('./logs/info.log'), level: 'info' },
-        { stream: pino.destination('./logs/error.log'), level: 'error' },
-        { stream: pino.destination('./logs/debug.log'), level: 'debug' },
-        { stream: pino.destination('./logs/warn.log'), level: 'warn' },
-        { stream: pino.destination('./logs/fatal.log'), level: 'fatal' },
+        {
+          stream: pino.destination(dir + '/info.log'),
+          level: 'info',
+        },
+        {
+          stream: pino.destination(dir + '/error.log'),
+          level: 'error',
+        },
+        {
+          stream: pino.destination(dir + '/debug.log'),
+          level: 'debug',
+        },
+        {
+          stream: pino.destination(dir + '/warn.log'),
+          level: 'warn',
+        },
+        {
+          stream: pino.destination(dir + '/fatal.log'),
+          level: 'fatal',
+        },
       ]),
     );
 
