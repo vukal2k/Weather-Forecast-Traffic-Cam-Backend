@@ -1,5 +1,5 @@
 import { Controller, Get, Query } from '@nestjs/common';
-import { ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { LocationDto } from '../../../dto/traffic-image/location.dto';
 import { BaseController } from '../../../utils/base.controller';
 import { LocationService } from './location.service';
@@ -15,6 +15,10 @@ export class LocationController extends BaseController {
   }
   @Get()
   @ApiResponse({ type: LocationDto, isArray: true })
+  @ApiOperation({
+    summary:
+      'Allow the user to choose a date and time, then show a list of locations with traffic cam photos for the specified date and time',
+  })
   @ApiQuery({
     type: Date,
     name: 'dateTime',

@@ -1,8 +1,14 @@
+import { CurrentUser } from '@/utils/decorators/user.decorator';
 import { Controller, Get, Query } from '@nestjs/common';
-import { ApiHeader, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiHeader,
+  ApiOperation,
+  ApiQuery,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { Weather24Forecast } from '../../../dto/weather-forecast/forecast-240hour.dto';
 import { Forecast24HoursService } from './forecast24-hours.service';
-import { CurrentUser } from '@/utils/decorators/user.decorator';
 
 @ApiHeader({
   name: 'Api-Key',
@@ -16,6 +22,10 @@ export class Forecast24HoursController {
    */
   constructor(private foreCast24HourService: Forecast24HoursService) {}
   @Get()
+  @ApiOperation({
+    summary:
+      'Return the weather info for that location from API 2 (Weather Forecast)',
+  })
   @ApiQuery({
     type: Date,
     name: 'dateTime',

@@ -1,7 +1,7 @@
 import { BaseController } from '@/utils/base.controller';
 import { CurrentUser } from '@/utils/decorators/user.decorator';
 import { Body, Controller, Get, Post, Query } from '@nestjs/common';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import {
   PeriodType,
   TopMostPeriodResponseItem,
@@ -25,16 +25,25 @@ export class QueryReportController extends BaseController {
   }
 
   @Get('my-recently')
+  @ApiOperation({
+    summary: 'Recommend to the user his/her most recent searches',
+  })
   public async getMyRecent(@CurrentUser() userId) {
     return this.queryReportSv.getMyRecentlyQuery(userId);
   }
 
   @Get('all-recently')
+  @ApiOperation({
+    summary: 'Recommend to the most recent searches of other people',
+  })
   public async getAllRecently(@CurrentUser() userId) {
     return this.queryReportSv.getAllRecentlyQuery(userId);
   }
 
   @Post('log-history')
+  @ApiOperation({
+    summary: 'Log location search history to db',
+  })
   logLocationSearch(
     @Body() logLocationSearch: LogLocationSearchDto,
     @CurrentUser() userId: string,
@@ -44,6 +53,10 @@ export class QueryReportController extends BaseController {
 
   @AllowUnauthorizedRequest()
   @Get('top-10-recently-queries')
+  @ApiOperation({
+    summary:
+      'Retrieve the most recent 10 date time + location searched by allusers consolidated.',
+  })
   @ApiResponse({
     type: TopRecentlyQueriesResponseItem,
     isArray: true,
@@ -54,6 +67,10 @@ export class QueryReportController extends BaseController {
 
   @AllowUnauthorizedRequest()
   @Get('top-10-most-queries/period')
+  @ApiOperation({
+    summary:
+      'Retrieve the top 10 date time + location searched within a period.',
+  })
   @ApiResponse({
     type: TopMostQueriesResponseItem,
     isArray: true,
@@ -67,6 +84,9 @@ export class QueryReportController extends BaseController {
 
   @AllowUnauthorizedRequest()
   @Get('most-period-queries')
+  @ApiOperation({
+    summary: 'Retrieve the period of which there are most searches performed.',
+  })
   @ApiResponse({
     type: TopMostPeriodResponseItem,
   })

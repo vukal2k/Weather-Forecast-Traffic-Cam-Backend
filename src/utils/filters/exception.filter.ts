@@ -45,8 +45,9 @@ export class AllExceptionsFilter implements ExceptionFilter {
       stack,
     };
 
-    // const message = 'Internal server error';
-    //TODO: Add logging
+    const message = process.env.LOG_LEVEL
+      ? exception.message
+      : 'Internal server error';
     this.logger.error(exception.message, errorDetail);
 
     if (process.env.LOG_LEVEL === 'debug') {
@@ -58,8 +59,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
     } else {
       response.status(statusCode).json({
         statusCode,
-        // message, // todo Pls use this in PROD
-        message: exception.message, // This is for debugging only
+        message,
       });
     }
   }
