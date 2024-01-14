@@ -18,8 +18,6 @@ This project is built using a robust tech stack for optimal performance and scal
 - **Database**: PostgreSQL with TypeORM
 - **Caching**: Redis with ioredis
 - **API Documentation**: Swagger (NestJS Swagger)
-- **Validation**: class-validator, class-transformer
-- **Environment Variables Management**: dotenv
 - **Logging**: Pino (nestjs-pino, pino-pretty)
 - **Testing**: Jest, supertest, @nestjs/testing, pg-mem (in-memory database), redis-memory-server (in-memory redis server)
 - **Code Formatting and Linting**: ESLint, Prettier
@@ -37,18 +35,32 @@ cd weather-forecast-traffic-cam-backend
 npm install
 ```
 
+## Environment Setup
 
-## Usage
-To start the application in development mode:
+To run this project, you will need to set up the following environment variables. You can do this by creating a `.env` file in the root directory of the project and adding the following key-value pairs:
+```plaintext
+# PostgreSQL
+DB_TYPE=postgres
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=weaforetracam
+DB_USER=admin
+DB_PASSWORD=weaforetracampass
 
-```bash
-npm run start:dev
-```
+# Redis
+REDIS_URL=redis://localhost:6379
 
-To build the application for production:
-```bash
-npm run build
-npm run start:prod
+# Traffic Images API
+TRAFFIC_IMAGES_URL=https://api.data.gov.sg/v1/transport/traffic-images
+
+# Weather Forecast Next 24 Hours
+FORECAST_24_HOUR_URL=https://api.data.gov.sg/v1/environment/24-hour-weather-forecast
+
+# Google Geocoder API Key
+GOOGLE_GEOCODER_API_KEY=[Your Google Geocoder API Key]
+
+# Log Level
+LOG_LEVEL=trace
 ```
 
 ## Docker support
@@ -72,6 +84,19 @@ npm run db-migration-gen
 To run migrations:
 ```bash
 npm run db-migration-run
+```
+
+## Usage
+To start the application in development mode:
+
+```bash
+npm run start:dev
+```
+
+To build the application for production:
+```bash
+npm run build
+npm run start:prod
 ```
 
 ## Running Tests
