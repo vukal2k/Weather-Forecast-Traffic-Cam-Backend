@@ -5,7 +5,7 @@ import * as moment from 'moment';
 import { firstValueFrom } from 'rxjs';
 import { LocationDto } from '../../../dto/traffic-image/location.dto';
 import { CacheService } from '../../../utils/modules/cache/cache.service';
-import { GoogleGeocoderService } from '../../../utils/modules/google-geocoder/google-geocoder.service';
+import { GeopluginService } from '../../../utils/modules/google-geocoder/geoplugin.service';
 
 @Injectable()
 export class LocationService {
@@ -14,7 +14,8 @@ export class LocationService {
    */
   constructor(
     private httpService: HttpService,
-    private googleGeocorderService: GoogleGeocoderService,
+    // private googleGeocorderService: GoogleGeocoderService, //Expensive
+    private geopluginService: GeopluginService,
     private cacheService: CacheService,
   ) {}
 
@@ -44,15 +45,15 @@ export class LocationService {
       const lat = camera.location.latitude;
       const long = camera.location.longitude;
 
-      const geo = await this.googleGeocorderService
+      const geo = await this.geopluginService
         .reverseFind(lat, long)
         .catch((err) => {
           console.error(err);
         });
       locations.push({
         location:
-          geo && !!geo[0]?.formatted_address
-            ? geo[0]?.formatted_address
+          geo && !!geo.geoplugin_place
+            ? geo.geoplugin_place
             : camera.location.latitude + '-' + camera.location.longitude,
         image: camera.image,
         locationLongLat: camera.location,
