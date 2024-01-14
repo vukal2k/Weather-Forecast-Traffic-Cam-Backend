@@ -26,12 +26,16 @@ This project is built using a robust tech stack for optimal performance and scal
   - google-geocoder for geocoding services
   - uuid for unique identifier generation
 
+### Prerequisites
+- Node.js v18.17.0
+- Docker
+
 ## Installation
 To install the project, follow these steps:
 
 ```bash
 git clone https://github.com/vukal2k/Weather-Forecast-Traffic-Cam-Backend.git
-cd weather-forecast-traffic-cam-backend
+cd Weather-Forecast-Traffic-Cam-Backend
 npm install
 ```
 
