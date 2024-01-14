@@ -59,7 +59,7 @@ FORECAST_24_HOUR_URL=https://api.data.gov.sg/v1/environment/24-hour-weather-fore
 # Google Geocoder API Key
 GOOGLE_GEOCODER_API_KEY=[Your Google Geocoder API Key]
 
-# Log Level
+# Log Level : "fatal" | "error" | "warn" | "info" | "debug" | "trace"
 LOG_LEVEL=trace
 ```
 
