@@ -4,8 +4,8 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
-import { MockUtils } from '../../utils/tests/in-memory-datasource';
 
+import { MockUtils } from '../../../test/setup-e2e';
 import { ILoggerService } from './adapter';
 import { LoggerService } from './service';
 
