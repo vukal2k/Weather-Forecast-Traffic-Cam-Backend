@@ -115,3 +115,7 @@ npm run test:e2e
 
 ## API Documentation
 http://localhost:3000/swagger#/
+
+# Note
+Sometime google-geocoder API will be exceed so the result for location will have format "lat-long". Please check logs in file "logs/error.log" to see the error.
+
