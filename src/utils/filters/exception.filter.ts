@@ -7,9 +7,10 @@ import {
 } from '@nestjs/common';
 
 import { Request, Response } from 'express';
+import { ILoggerService } from '../modules/logger/adapter';
 @Catch(HttpException)
 export class AllExceptionsFilter implements ExceptionFilter {
-  constructor() {}
+  constructor(private readonly logger: ILoggerService) {}
   async catch(exception: HttpException, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const contextHttp = host.switchToHttp();
@@ -46,8 +47,9 @@ export class AllExceptionsFilter implements ExceptionFilter {
 
     // const message = 'Internal server error';
     //TODO: Add logging
+    this.logger.error(exception.message, errorDetail);
 
-    if (process.env.LOG_LEVEL === 'DEBUG') {
+    if (process.env.LOG_LEVEL === 'debug') {
       response.status(HttpStatus.OK).json({
         statusCode,
         message: exception.message,

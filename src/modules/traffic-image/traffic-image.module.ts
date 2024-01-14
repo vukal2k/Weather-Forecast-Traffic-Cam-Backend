@@ -3,6 +3,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { CacheModule } from '../../utils/modules/cache/cache.module';
 import { GoogleGeocoderModule } from '../../utils/modules/google-geocoder/google-geocoder.module';
+import { LoggerCommonModule } from '../../utils/modules/logger/module';
 import { LocationController } from './location/location.controller';
 import { LocationService } from './location/location.service';
 
@@ -15,6 +16,7 @@ import { LocationService } from './location/location.service';
       envFilePath: ['.env'],
     }),
     CacheModule,
+    LoggerCommonModule,
     GoogleGeocoderModule,
   ],
   controllers: [LocationController],

@@ -5,6 +5,7 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { LocationSearchHistoryEntity } from '../../databases/entities/LocationSearchHistory.entity';
 import { LocationSearchHistoryRepository } from '../../databases/repositories/LocationSearchHistory.repository';
+import { LoggerCommonModule } from '../../utils/modules/logger/module';
 import { QueryReportController } from './query-report/query-report.controller';
 import { QueryReportService } from './query-report/query-report.service';
 
@@ -18,6 +19,7 @@ import { QueryReportService } from './query-report/query-report.service';
     }),
     TypeOrmModule.forFeature([LocationSearchHistoryEntity]),
     CacheModule,
+    LoggerCommonModule,
   ],
   controllers: [QueryReportController],
   providers: [QueryReportService, LocationSearchHistoryRepository],

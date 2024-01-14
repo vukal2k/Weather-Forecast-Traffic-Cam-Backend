@@ -2,6 +2,8 @@ import { NestFactory, Reflector } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { ResponseInterceptor } from './utils/interceptors/response.interceptor';
+import { ILoggerService } from './utils/modules/logger/adapter';
+import { LoggerService } from './utils/modules/logger/service';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -19,7 +21,10 @@ async function bootstrap() {
   SwaggerModule.setup('swagger', app, document);
 
   app.enableCors();
+  app.useLogger(app.get(ILoggerService));
+  const logger = new LoggerService();
 
   await app.listen(3000);
+  logger.info(`🚀🚀🚀 App service running on port 3000`);
 }
 bootstrap();
