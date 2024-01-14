@@ -24,8 +24,8 @@ export class Forecast24HoursService {
   ) {}
 
   private async cacheUserQuery(dateTime: Date | string, currentUserId: string) {
-    this.cacheService.zCounter(CACHE_KEYS.TOP_SEARCH, moment(dateTime).toISOString());
-    this.cacheService.zCounter(currentUserId, moment(dateTime).toISOString());
+    this.cacheService.zAdd(CACHE_KEYS.TOP_SEARCH, moment(dateTime).toISOString(), new Date().getTime());
+    this.cacheService.zAdd(currentUserId, moment(dateTime).toISOString(), new Date().getTime());
   }
 
   public async get24ForeCast(

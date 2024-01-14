@@ -28,6 +28,11 @@ export class CacheService {
     return await this.redis.zadd(key, 'INCR', 1, str);
   }
 
+  async zAdd<T>(key: string, data: T, score: number): Promise<number> {
+    const str = JSON.stringify(data);
+    return await this.redis.zadd(key, score, str);
+  }
+
   async zReverangeByScore<T>(
     key: string,
     start: number,
