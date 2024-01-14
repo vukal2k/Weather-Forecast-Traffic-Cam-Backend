@@ -23,7 +23,8 @@ This project is built using a robust tech stack for optimal performance and scal
 - **Code Formatting and Linting**: ESLint, Prettier
 - **Additional Libraries**:
   - moment, moment-timezone for date/time management
-  - google-geocoder for geocoding services
+  -
+~~google-geocoder for geocoding services~~ geoplugin.net for geocoding services
   - uuid for unique identifier generation
 
 ### Prerequisites
@@ -117,5 +118,5 @@ npm run test:e2e
 http://localhost:3000/swagger#/
 
 # Note
-Sometime google-geocoder API will be exceed so the result for location will have format "lat-long". Please check logs in file "logs/error.log" to see the error.
+Sometime ~~google-geocoder~~ geoplugin.net API will be exceed so the result for location will have format "lat-long". Please check logs in file "logs/error.log" to see the error.
 
