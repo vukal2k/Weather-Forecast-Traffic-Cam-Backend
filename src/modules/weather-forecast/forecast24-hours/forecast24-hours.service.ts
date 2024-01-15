@@ -73,4 +73,36 @@ export class Forecast24HoursService {
 
     return result;
   }
+
+  public async get2ForeCast(
+    lat: number,
+    long: number,
+    currentUserId: string,
+    dateTime?: Date | string,
+  ): Promise<string> {
+    if (dateTime) {
+      this.cacheUserQuery(dateTime, currentUserId);
+    }
+
+    const dateTimeSg = moment(dateTime).tz('Asia/Singapore');
+
+    const rawData = await firstValueFrom(
+      this.httpService.get(this.configService.get('FORECAST_2_HOUR_URL'), {
+        params: {
+          date_time: dateTime ? dateTimeSg.format('YYYY-MM-DDTHH:mm:ss+08:00') : undefined,
+        },
+      }),
+    );
+
+    const locations = rawData.data?.area_metadata.sort((a, b) => {
+      const previousDistance = (Math.abs(a.label_location.longitude - long) ** 2) + Math.abs(a.label_location.latitude - lat) ** 2;
+      const nextDistance = (Math.abs(b.label_location.longitude - long) ** 2) + Math.abs(b.label_location.latitude - lat) ** 2;
+
+      return previousDistance < nextDistance ? -1 : 1;
+
+    }) ?? []
+
+    const areaForecast = rawData.data?.items[0]?.forecasts.find(fc => locations[0]?.name && fc.area === locations[0]?.name);
+    return areaForecast?.forecast;
+  }
 }
