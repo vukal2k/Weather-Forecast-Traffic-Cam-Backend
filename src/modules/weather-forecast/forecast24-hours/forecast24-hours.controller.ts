@@ -46,4 +46,31 @@ export class Forecast24HoursController {
   ): Promise<Weather24Forecast> {
     return this.foreCast24HourService.get24ForeCast(userId, dateTime, date);
   }
+
+  @Get('/2-hours-forecast')
+  @ApiOperation({
+    summary:
+      'Return the weather info for that location from API 2 (Weather Forecast) 2-hour-weather-forecast',
+  })
+  @ApiQuery({
+    type: Date,
+    name: 'dateTime',
+    description: 'YYYY-MM-DD[T]HH:mm:ss (SGT)',
+    required: false,
+  })
+  @ApiQuery({
+    type: Date,
+    name: 'date',
+    description: 'YYYY-MM-DD',
+    required: false,
+  })
+  @ApiResponse({ type: Weather24Forecast, isArray: true })
+  get2ForeCast(
+    @CurrentUser() userId: string,
+    @Query('lat') lat: number,
+    @Query('long') long: number,
+    @Query('dateTime') dateTime?: Date,
+  ): Promise<string> {
+    return this.foreCast24HourService.get2ForeCast(lat, long, userId, dateTime);
+  }
 }
