@@ -33,7 +33,7 @@ export class Forecast24HoursService {
     dateTime?: Date | string,
     date?: Date | string,
   ): Promise<Weather24Forecast> {
-    if (dateTime) {
+    if (!!dateTime && moment(dateTime).isValid()) {
       this.cacheUserQuery(dateTime, currentUserId);
     }
 
@@ -77,13 +77,8 @@ export class Forecast24HoursService {
   public async get2ForeCast(
     lat: number,
     long: number,
-    currentUserId: string,
     dateTime?: Date | string,
   ): Promise<string> {
-    if (dateTime) {
-      this.cacheUserQuery(dateTime, currentUserId);
-    }
-
     const dateTimeSg = moment(dateTime).tz('Asia/Singapore');
 
     const rawData = await firstValueFrom(

@@ -66,11 +66,10 @@ export class Forecast24HoursController {
   })
   @ApiResponse({ type: Weather24Forecast, isArray: true })
   get2ForeCast(
-    @CurrentUser() userId: string,
     @Query('lat') lat: number,
     @Query('long') long: number,
     @Query('dateTime') dateTime?: Date,
   ): Promise<string> {
-    return this.foreCast24HourService.get2ForeCast(lat, long, userId, dateTime);
+    return this.foreCast24HourService.get2ForeCast(lat, long, dateTime);
   }
 }
