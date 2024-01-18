@@ -23,8 +23,7 @@ This project is built using a robust tech stack for optimal performance and scal
 - **Code Formatting and Linting**: ESLint, Prettier
 - **Additional Libraries**:
   - moment, moment-timezone for date/time management
-  -
-~~google-geocoder for geocoding services~~ geoplugin.net for geocoding services
+  - ~~google-geocoder for geocoding services~~ geoplugin.net for geocoding services
   - uuid for unique identifier generation
 
 ### Prerequisites
